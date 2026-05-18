@@ -1906,16 +1906,16 @@ body > * {
 .policy-text {
   font-size: 0.95rem;
   line-height: 1.5;
-  color: var(--text-muted);
+  color: var(--text);
 }
 
 .policy-link {
-  color: var(--text);
+  color: var(--yellow);
   text-decoration: underline;
 }
 
 .policy-link:hover {
-  color: var(--green);
+  color: var(--text);
 }
 
 .shipping-option.locked {
