@@ -1201,7 +1201,7 @@ body > * {
 
 .cart-checkbox:checked::after {
   border-color: var(--yellow);
-  transform: rotate(180deg) scale(1);
+  transform: rotate(45deg) scale(1);
   opacity: 1;
 }
 
