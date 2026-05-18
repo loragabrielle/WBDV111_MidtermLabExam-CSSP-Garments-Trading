@@ -35,6 +35,7 @@
 ![Products](Assets/README/Website-Preview-Product.png)
 
 ### Cart Page
+![Cart](Assets/README/Website-Preview-Cart.png)
 
 ### About Us Page
 ![About Us](Assets/README/Website-Preview-AboutUs.png)
