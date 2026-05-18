@@ -692,9 +692,9 @@ function renderCart() {
   }
 
   itemsList.innerHTML = cart.map(item => {
-  const productType = item.type && item.type !== 'undefined' && item.type !== 'null'
+  const productType = item.type && item.type !== 'Stock Available' && item.type !== 'null'
     ? item.type
-    : (item.category || item.productType || 'Uniform');
+    : (item.category || item.productType || 'Stock Available');
 
   // guard all item fields against undefined values
   const quantity = item.quantity ?? item.qty ?? 1;
@@ -754,9 +754,9 @@ function renderCart() {
       summaryList.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">No items selected</p>';
     } else {
       summaryList.innerHTML = selectedItems.map(item => {
-        const productType = item.type && item.type !== 'undefined' && item.type !== 'null'
+        const productType = item.type && item.type !== 'Stock Available' && item.type !== 'null'
           ? item.type
-          : (item.category || item.productType || 'Uniform');
+          : (item.category || item.productType || 'Stock Available');
         return `
         <div class="summary-item-card">
           <div class="summary-item-thumb">
