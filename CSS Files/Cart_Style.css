@@ -1906,11 +1906,11 @@ body > * {
 .policy-text {
   font-size: 0.95rem;
   line-height: 1.5;
-  color: var(--text);
+  color: var(--text-muted);
 }
 
 .policy-link {
-  color: var(--text-muted);
+  color: var(--text);
   text-decoration: underline;
 }
 
