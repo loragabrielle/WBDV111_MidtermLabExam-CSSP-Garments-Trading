@@ -14,7 +14,7 @@ if (tickerTrack) {
   tickerTrack.innerHTML += tickerTrack.innerHTML;
 }
 
-// ============================================
+/* ============================================
 // THEME SYSTEM
 // ============================================
 // grab the root html element for theme switching
@@ -27,7 +27,7 @@ const savedTheme = localStorage.getItem('themeMode') || localStorage.getItem('cs
 html.setAttribute('data-theme', savedTheme);
 updateThemeIcon(); */
 
-// load saved theme and boot location + payment systems after dom is ready
+/* load saved theme and boot location + payment systems after dom is ready
 document.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem('themeMode') || localStorage.getItem('cssp-theme') || 'light';
   html.setAttribute('data-theme', savedTheme);
@@ -55,7 +55,22 @@ function updateThemeIcon() {
       ? 'fa-solid fa-sun' 
       : 'fa-solid fa-moon';
   }
-}
+} */
+
+/* ── THEME TOGGLE ─────────────────────────────── */
+const themeIcon = $('themeIcon');
+const html = document.documentElement;
+(function initTheme() {
+  const saved = localStorage.getItem('cssp-theme') || 'light';
+  html.setAttribute('data-theme', saved);
+  themeIcon.className = saved === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+})();
+$('themeToggle').addEventListener('click', () => {
+  const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('cssp-theme', next);
+  themeIcon.className = next === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+});
 
 // ============================================
 // CURRENCY SYSTEM
@@ -122,7 +137,7 @@ function getShippingFeeAmount(type) {
 
   // convert usd international rates back to php equivalent
   const amountUsd = type === 'express' ? 8 : 5;
-  const usdRate = currencyRates.USD || 0.018;
+  const usdRate = Rates.USD || 0.018;
   const phpAmount = amountUsd / usdRate;
   return Number.isFinite(phpAmount) ? phpAmount : (type === 'express' ? 250 : 150);
 }
@@ -132,22 +147,22 @@ const TAX_RATE = 0.0;
 // holds the last removed cart item for the undo feature
 let lastRemovedItem = null;
 
-// refresh all currency-related ui elements and recalculate totals
-function updateCurrencyDisplay() {
-  const el = $('activeCurrency');
-  if (el) el.textContent = currentCurrency;
-  $$('#currencyDropdown li').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.currency === currentCurrency);
+// refresh all -related ui elements and recalculate totals
+function updateDisplay() {
+  const el = $('active');
+  if (el) el.textContent = current;
+  $$('#Dropdown li').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset. === current);
   });
   renderCart();
   updateShippingDisplay();
   updateCartSummary();
   updateShippingRatesDisplay();
-  validateCurrencyShippingMatch();
+  validateShippingMatch();
 }
 
 // tracks the last mismatch type so we don't repeat the same toast
-let lastShippingCurrencyMismatch = null;
+let lastShippingMismatch = null;
 
 // remove any currently visible shipping mismatch toast from the container
 function removeExistingMismatchToast() {
@@ -159,15 +174,15 @@ function removeExistingMismatchToast() {
   });
 }
 
-// map each supported country code to its expected local currency
-const _countryCurrencyMap = {
+// map each supported country code to its expected local 
+const _countryMap = {
   PH: 'PHP',  // Philippines → PHP
   US: 'USD',  // United States → USD
   UK: 'GBP',  // United Kingdom → GBP
 };
 
 // full display names used in toast messages
-const _currencyNames = {
+const _Names = {
   PHP: 'Philippine Peso (PHP)',
   USD: 'US Dollar (USD)',
   GBP: 'British Pound (GBP)',
