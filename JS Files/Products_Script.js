@@ -1,22 +1,20 @@
-// helper functions for easier element selection
-const $ = (id) => document.getElementById(id);
-const $$ = (sel) => document.querySelectorAll(sel);
+/* helper shortcuts */
+const $ = id => document.getElementById(id);
+const $$ = sel => document.querySelectorAll(sel);
 
-// ticker duplication logic
+// Ticker duplication logic
 const tickerTrack = $('tickerTrack');
 if (tickerTrack) {
   tickerTrack.innerHTML += tickerTrack.innerHTML;
 }
 
-// adds shadow to header after scrolling down 50px
-const header = $('siteHeader');
+/* ── SCROLL → sticky shadow ──────────────────── */
+const hdr = $('siteHeader');
 window.addEventListener('scroll', () => {
-  if (window.scrollY > 50) {
-    header.classList.add('scrolled');
-  } else {
-    header.classList.remove('scrolled');
-  }
-});
+  hdr.classList.toggle('scrolled', window.scrollY > 50);
+  $('backToTop').classList.toggle('visible', window.scrollY > 300);
+}, { passive: true });
+
 
 /* ── MEGA MENU (click-based, outside-click closes) ── */
 const megaItems = document.querySelectorAll('.nav-item.has-mega'); 
@@ -211,18 +209,24 @@ $$('#currencyDropdown li').forEach(item => {
   });
 });
 
-// back to top button logic
-const backBtn = $('backToTop');
-
-if (backBtn) {
-  window.addEventListener('scroll', () => {
-    backBtn.classList.toggle('visible', window.scrollY > 300);
-  });
-
-  backBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+/* ── CART (LocalStorage) ──────────────────────── */
+function getCart() {
+  const cart = localStorage.getItem('cssp-cart');
+  return cart ? JSON.parse(cart) : [];
 }
+
+function updateCartBadge() {
+  const cart = getCart();
+
+  const totalQty = cart.reduce((sum, item) => {
+    return sum + (Number(item.quantity) || 0);
+  }, 0);
+
+  const badge = document.getElementById('cartBadge');
+  if (badge) badge.textContent = totalQty;
+}
+
+updateCartBadge();
 
 // section reveal transitions
 const style = document.createElement('style');
@@ -781,3 +785,13 @@ cartModal.addEventListener("click", function (e) {
     closeCartModal();
   }
 });
+
+/* ── BACK TO TOP ──────────────────────────────── */
+$('backToTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+/* ── SCROLL REVEAL ────────────────────────────── */
+$$('section').forEach(s => s.classList.add('reveal'));
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
+}, { threshold: .1 });
+$$('.reveal').forEach(el => revealObserver.observe(el));
