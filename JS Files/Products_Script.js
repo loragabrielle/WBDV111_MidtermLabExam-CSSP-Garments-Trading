@@ -1,51 +1,51 @@
-/* helper shortcuts */
+/* helper shortcuts === shortcut functions to make the code shorter */
 const $ = id => document.getElementById(id);
 const $$ = sel => document.querySelectorAll(sel);
 
-// Ticker duplication logic
+/* ticker duplication === to make it infinite the ticker content */
 const tickerTrack = $('tickerTrack');
-if (tickerTrack) {
+if (tickerTrack) { /* to check if the element exists first */ 
   tickerTrack.innerHTML += tickerTrack.innerHTML;
 }
 
-/* ── SCROLL → sticky shadow ──────────────────── */
+/* -------------------------- SCROLL → sticky shadow --------------------------  */
 const hdr = $('siteHeader');
 window.addEventListener('scroll', () => {
   hdr.classList.toggle('scrolled', window.scrollY > 50);
-  $('backToTop').classList.toggle('visible', window.scrollY > 300);
-}, { passive: true });
+  $('backToTop').classList.toggle('visible', window.scrollY > 300); /* when user scrolls down to 300px the button will appear */
+}, { passive: true }); /* passive: true to improve scroll performance */
 
 
-/* ── MEGA MENU (click-based, outside-click closes) ── */
+/* -------------------------- MEGA MENU (click-based, outside-click closes) --------------------------  */
 const megaItems = document.querySelectorAll('.nav-item.has-mega'); 
 
 megaItems.forEach(item => {
   const btn = item.querySelector('.nav-link');
 
   btn.addEventListener('click', e => {
-    // Check current state once
+    // check current state once
     const isOpen = item.classList.contains('nav-open');
     
-    // Logic for Mobile (<= 768px)
+    // logic for mobile (<= 768px)
     if (window.innerWidth <= 768) {
-      // If the menu is closed, prevent the link from navigating and open the menu instead
+      // if the menu is closed, prevent the link from navigating and open the menu instead
       if (!isOpen) {
-        e.preventDefault();
-        e.stopPropagation();
+        e.preventDefault(); /* clicking menu opens dropdown instead of leaving page */
+        e.stopPropagation(); /* prevent the click from bubbling up to document which would immediately close the menu */
       } 
-      // If the link is just a placeholder "#", always prevent navigation
+      // if the link is just a placeholder "#", always prevent navigation
       else if (btn.getAttribute('href') === '#') {
         e.preventDefault();
       }
     } else {
-      // Desktop behavior: Always treat the top-level click as a toggle
+      // desktop behavior: Always treat the top-level click as a toggle
       e.preventDefault();
       e.stopPropagation();
     }
 
-    /* Close all other open mega menus */
+    /* close all other open mega menus */
     megaItems.forEach(i => {
-      if (i !== item) {
+      if (i !== item) { // close all other menus except the one being clicked
         i.classList.remove('nav-open');
         i.querySelector('.nav-link').setAttribute('aria-expanded', 'false');
       }
@@ -89,14 +89,14 @@ document.addEventListener('keydown', e => {
   }
 });
 
-/* ── HAMBURGER (mobile nav) ───────────────────── */
+/* --------------------------  HAMBURGER (mobile nav) --------------------------  */
 $('hamburger').addEventListener('click', () => {
   const isOpen = $('mainNav').classList.toggle('open');
   $('hamburger').classList.toggle('open', isOpen);
   $('hamburger').setAttribute('aria-expanded', String(isOpen));
 });
 
-/* ── SEARCH BAR ───────────────────────────────── */
+/* --------------------------  SEARCH BAR --------------------------  */
 /* Product data for live filtering */
 const productData = [
   { name: 'Royal Blue — 100% Cotton Twill Coverall (Reflectorized)', cat:'Uniforms', price:'₱1,000', img:'Assets/Products/UNI-PR1-Front-Coverall (Blue).png'},
@@ -143,7 +143,7 @@ $('searchInput').addEventListener('input', () => {
   res.classList.add('show');
 });
 
-/* ── THEME TOGGLE ─────────────────────────────── */
+/* -------------------------- THEME TOGGLE -------------------------- */
 const themeIcon = $('themeIcon');
 const html = document.documentElement;
 (function initTheme() {
@@ -158,7 +158,7 @@ $('themeToggle').addEventListener('click', () => {
   themeIcon.className = next === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
 });
 
-// currency system
+/* -------------------------- CURRENCY SYSTEM -------------------------- */
 const rates = {
   PHP: { symbol: '₱', rate: 1 },
   USD: { symbol: '$', rate: 0.018 },
@@ -209,7 +209,7 @@ $$('#currencyDropdown li').forEach(item => {
   });
 });
 
-/* ── CART (LocalStorage) ──────────────────────── */
+/* -------------------------- CART (LOCAL STORAGE) -------------------------- */
 function getCart() {
   const cart = localStorage.getItem('cssp-cart');
   return cart ? JSON.parse(cart) : [];
@@ -228,7 +228,7 @@ function updateCartBadge() {
 
 updateCartBadge();
 
-// section reveal transitions
+/* -------------------------- SECTION REVEAL TRANSITIONS -------------------------- */
 const style = document.createElement('style');
 style.textContent = `
 .reveal {
@@ -256,8 +256,6 @@ const observer = new IntersectionObserver((entries) => {
 
 $$('.reveal').forEach(el => observer.observe(el));
 
-// toast notification 
-
 
 // add to cart function
 function getCart() {
@@ -275,6 +273,7 @@ function getCart() {
 //  updateCartBadge();
 // }
 
+/* -------------------------- SAVE CART -------------------------- */
 function saveCart(cartItem) {
   let cart = JSON.parse(localStorage.getItem('cssp-cart')) || [];
 
@@ -345,6 +344,7 @@ let images = [];
 let index = 0;
 let currentProductData = null;
 
+/* -------------------------- PRODUCT MODAL -------------------------- */
 function openCartModal(btn) {
   if (!btn) return;
 
@@ -589,13 +589,13 @@ function openCartModal(btn) {
   document.getElementById("cartModal").classList.add("active");
 }
 
-// closes the cart modal (yung x na button)
+/* -------------------------- CLOSE PRODUCT MODAL -------------------------- */
 function closeCartModal() {
   document.getElementById("cartModal").classList.remove("active");
   currentProductData = null;
 }
 
-// next image in the modal carousel (yung right arrow)
+/* -------------------------- NEXT IMAGE PRODUCT MODAL (RIGHT ARROW) -------------------------- */
 function nextImage() {
   if (images.length == 0) return;
     index++;
@@ -606,8 +606,8 @@ function nextImage() {
 
     document.getElementById("modalImage").src = images[index];
 }
-
-// previous image in the modal carousel (yung left arrow)
+  
+/* -------------------------- PREVIOUS IMAGE PRODUCT MODAL (LEFT ARROW) -------------------------- */
 function prevImage() {
   if (images.length == 0) return;
   index--;
@@ -619,6 +619,7 @@ function prevImage() {
     document.getElementById("modalImage").src = images[index];
 }
 
+/* -------------------------- CONFIRM ADD TO CART -------------------------- */
 function confirmAddToCart() {
 
   const container = document.getElementById("toastContainer");
@@ -701,6 +702,7 @@ function confirmAddToCart() {
   }
 }
 
+/* -------------------------- TOAST WHEN VALIDATION FAILS -------------------------- */
 function showToast(type, title, message) {
   const container = document.getElementById("toastContainer");
   if (!container) return;
@@ -756,6 +758,7 @@ function showToast(type, title, message) {
   });
 }
 
+/* -------------------------- SUCCESS MODAL (ADDED TO CART) -------------------------- */
 function showSuccessModal() {
     const modal = document.getElementById("successModal");
 
@@ -766,6 +769,7 @@ function showSuccessModal() {
     }, 2000);
 }
 
+/* -------------------------- SHAKE MODAL (WHEN VALIDATION IS NOT MET) -------------------------- */
 function shakeModal() {
   const box = document.querySelector(".cart-box");
 
@@ -786,10 +790,10 @@ cartModal.addEventListener("click", function (e) {
   }
 });
 
-/* ── BACK TO TOP ──────────────────────────────── */
+/* -------------------------- BACK TO TOP -------------------------- */
 $('backToTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-/* ── SCROLL REVEAL ────────────────────────────── */
+/* -------------------------- SCROLL REVEAL -------------------------- */
 $$('section').forEach(s => s.classList.add('reveal'));
 const revealObserver = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
