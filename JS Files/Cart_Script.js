@@ -1,7 +1,3 @@
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
-
 // shorthand to get element by id
 const $ = (id) => document.getElementById(id);
 // shorthand to get all matching elements
@@ -14,20 +10,18 @@ if (tickerTrack) {
   tickerTrack.innerHTML += tickerTrack.innerHTML;
 }
 
-/* ============================================
 // THEME SYSTEM
-// ============================================
 // grab the root html element for theme switching
 const html = document.documentElement;
 // grab the theme toggle button
 const themeToggle = $('themeToggle');
 
-/* Load saved theme from new or legacy keys
+// Load saved theme from new or legacy keys
 const savedTheme = localStorage.getItem('themeMode') || localStorage.getItem('cssp-theme') || 'light';
 html.setAttribute('data-theme', savedTheme);
-updateThemeIcon(); */
+updateThemeIcon(); 
 
-/* load saved theme and boot location + payment systems after dom is ready
+// load saved theme and boot location + payment systems after dom is ready
 document.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem('themeMode') || localStorage.getItem('cssp-theme') || 'light';
   html.setAttribute('data-theme', savedTheme);
@@ -55,22 +49,7 @@ function updateThemeIcon() {
       ? 'fa-solid fa-sun' 
       : 'fa-solid fa-moon';
   }
-} */
-
-/* ── THEME TOGGLE ─────────────────────────────── */
-const themeIcon = $('themeIcon');
-const html = document.documentElement;
-(function initTheme() {
-  const saved = localStorage.getItem('cssp-theme') || 'light';
-  html.setAttribute('data-theme', saved);
-  themeIcon.className = saved === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
-})();
-$('themeToggle').addEventListener('click', () => {
-  const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-  html.setAttribute('data-theme', next);
-  localStorage.setItem('cssp-theme', next);
-  themeIcon.className = next === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
-});
+} 
 
 // ============================================
 // CURRENCY SYSTEM
